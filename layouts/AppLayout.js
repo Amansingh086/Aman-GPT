@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Sidebar from "@/components/Sidebar";
@@ -9,16 +9,21 @@ export default function AppLayout({ children }) {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const { darkMode, sidebarOpen } = useSelector((state) => state.ui);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
 
   useEffect(() => {
-    if (!token) router.replace("/login");
-  }, [token, router]);
+    if (mounted && !token) router.replace("/login");
+  }, [token, router, mounted]);
 
-  if (!token) return null;
+  if (!mounted || !token) return null;
 
   return (
     <div className="flex h-screen overflow-hidden bg-surface dark:bg-neutral-950">

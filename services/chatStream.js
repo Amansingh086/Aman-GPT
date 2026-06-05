@@ -1,5 +1,8 @@
 export async function streamMessage({ chatId, prompt, languageMode, onMeta, onToken, onDone }) {
   const token = localStorage.getItem("aman_token");
+  const payload = { prompt, languageMode, stream: true };
+  if (chatId) payload.chatId = chatId;
+
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/chat`, {
     method: "POST",
     headers: {
@@ -7,7 +10,7 @@ export async function streamMessage({ chatId, prompt, languageMode, onMeta, onTo
       Accept: "text/event-stream",
       Authorization: `Bearer ${token}`
     },
-    body: JSON.stringify({ chatId, prompt, languageMode, stream: true })
+    body: JSON.stringify(payload)
   });
 
   if (!response.ok || !response.body) throw new Error("Unable to stream response");
