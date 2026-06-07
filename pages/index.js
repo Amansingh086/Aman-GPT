@@ -53,7 +53,13 @@ export default function Home() {
               <div>
                 <h2 className="text-3xl font-semibold">Aman GPT</h2>
                 <p className="mt-2 text-neutral-600 dark:text-neutral-400">
-                  {languageMode === "bhojpuri" ? "Bhojpuri mode ready." : "Professional Hindi mode ready."}
+                  {languageMode === "bhojpuri"
+                    ? "🗣️ Bhojpuri mode ready — बोलीं, हम सुनत बानी!"
+                    : languageMode === "english"
+                    ? "🇬🇧 English mode ready — How can I help you today?"
+                    : languageMode === "professional_hindi"
+                    ? "🇮🇳 Hindi mode ready — आज मैं आपकी कैसे मदद करूँ?"
+                    : "🌐 Auto-detect mode — Write in any language and I'll reply in the same!"}
                 </p>
               </div>
             </div>

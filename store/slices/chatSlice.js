@@ -37,7 +37,7 @@ const chatSlice = createSlice({
     chats: [],
     activeChat: null,
     messages: [],
-    languageMode: typeof window !== "undefined" ? localStorage.getItem("aman_language") || "professional_hindi" : "professional_hindi",
+    languageMode: typeof window !== "undefined" ? localStorage.getItem("aman_language") || "auto_detect" : "auto_detect",
     loading: false,
     streaming: false,
     error: null
