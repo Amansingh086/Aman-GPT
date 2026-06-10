@@ -3,7 +3,8 @@ export async function streamMessage({ chatId, prompt, languageMode, onMeta, onTo
   const payload = { prompt, languageMode, stream: true };
   if (chatId) payload.chatId = chatId;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/chat`, {
+  // Use relative /api path so the Next.js rewrite proxy forwards server-side
+  const response = await fetch(`/api/chat`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

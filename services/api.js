@@ -1,7 +1,12 @@
 import axios from "axios";
 
+// Use a relative URL so the Next.js rewrite proxy forwards the request
+// to the real backend. This eliminates CORS issues on Vercel because the
+// browser always calls the same Vercel origin — Next.js proxies it server-side.
+// For local dev, NEXT_PUBLIC_API_URL can still be set if you want direct calls,
+// but /api is recommended for consistency.
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+  baseURL: "/api",
   headers: { "Content-Type": "application/json" }
 });
 
@@ -15,7 +20,15 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(new Error(error.response?.data?.message || error.message))
+  (error) => {
+    // Provide a user-friendly message instead of raw "Network Error"
+    const message =
+      error.response?.data?.message ||
+      (error.message === "Network Error"
+        ? "Unable to reach the server. Please check your connection or try again later."
+        : error.message);
+    return Promise.reject(new Error(message));
+  }
 );
 
 export default api;
